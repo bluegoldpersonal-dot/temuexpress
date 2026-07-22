@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Temu Express</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background-color: #f0f2f5; color: #1c1e21; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { max-width: 420px; width: 100%; background: #ffffff; border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #ff6600; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { color: #ff6600; font-size: 1.6rem; font-weight: 800; }
+        .header p { color: #65676b; font-size: 0.95rem; margin-top: 4px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.95rem; font-weight: 700; color: #333; margin-bottom: 8px; text-align: center; }
+        .input-wrapper input { width: 100%; padding: 16px; border: 2.5px solid #ff6600; border-radius: 16px; font-size: 1.6rem; font-weight: 800; text-align: center; outline: none; background: #fff8f5; color: #222; }
+        .resultado-box { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; border-radius: 20px; padding: 22px; text-align: center; box-shadow: 0 8px 20px rgba(46, 125, 50, 0.25); margin-bottom: 20px; }
+        .resultado-box .monto-ves { font-size: 2.3rem; font-weight: 900; margin: 8px 0; }
+        .resultado-box .monto-bcv { font-size: 1.05rem; background: rgba(255, 255, 255, 0.2); padding: 6px 16px; border-radius: 30px; display: inline-block; font-weight: 700; }
+        .admin-panel { background: #f8f9fa; border-radius: 16px; padding: 15px; border: 1px dashed #cccccc; }
+        .admin-title { font-size: 0.85rem; font-weight: 700; color: #666; text-transform: uppercase; margin-bottom: 10px; text-align: center; }
+        .tasas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .tasa-item label { display: block; font-size: 0.72rem; color: #555; font-weight: 600; margin-bottom: 4px; text-align: center; }
+        .tasa-item input { width: 100%; padding: 8px 4px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; font-weight: bold; text-align: center; background: white; outline: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <h1>🛍️ TEMU EXPRESS</h1>
+        <p>Calculadora Directa de Precios</p>
+    </div>
+
+    <div class="input-group">
+        <label for="precioCop">Monto en Pesos Colombianos ($):</label>
+        <div class="input-wrapper">
+            <input type="number" id="precioCop" placeholder="Ej: 30000" oninput="calcular()" autofocus>
+        </div>
+    </div>
+
+    <div class="resultado-box">
+        <div style="font-size: 0.85rem; text-transform: uppercase; opacity: 0.9;">Precio Final a Pagar:</div>
+        <div class="monto-ves" id="resVes">0,00 Bs.</div>
+        <div class="monto-bcv" id="resBcv">Equivalente a: $0.00 BCV</div>
+    </div>
+
+    <div class="admin-panel">
+        <div class="admin-title">⚙️ Ajustar Tasas del Día</div>
+        <div class="tasas-grid">
+            <div class="tasa-item">
+                <label>Tasa COP</label>
+                <input type="number" id="tasaCop" value="3150" oninput="calcular()">
+            </div>
+            <div class="tasa-item">
+                <label>Tasa Binance</label>
+                <input type="number" id="tasaBinance" value="880" oninput="calcular()">
+            </div>
+            <div class="tasa-item">
+                <label>Tasa BCV</label>
+                <input type="number" id="tasaBcv" value="737" oninput="calcular()">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calcular() {
+        const precioCop = parseFloat(document.getElementById('precioCop').value) || 0;
+        const tasaCop = parseFloat(document.getElementById('tasaCop').value) || 1;
+        const tasaBinance = parseFloat(document.getElementById('tasaBinance').value) || 0;
+        const tasaBcv = parseFloat(document.getElementById('tasaBcv').value) || 1;
+
+        const costoUsd = precioCop / tasaCop;
+        const totalVes = costoUsd * tasaBinance;
+        const totalBcv = totalVes / tasaBcv;
+
+        document.getElementById('resVes').innerText = totalVes.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' Bs.';
+        document.getElementById('resBcv').innerText = 'Equivalente a: $' + totalBcv.toFixed(2) + ' BCV';
+    }
+
+    calcular();
+</script>
+
+</body>
+</html>
