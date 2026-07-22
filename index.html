@@ -6,65 +6,107 @@
     <title>Calculadora Temu Express</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-        body { background-color: #f0f2f5; color: #1c1e21; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { max-width: 420px; width: 100%; background: #ffffff; border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #ff6600; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { color: #ff6600; font-size: 1.6rem; font-weight: 800; }
-        .header p { color: #65676b; font-size: 0.95rem; margin-top: 4px; }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 0.95rem; font-weight: 700; color: #333; margin-bottom: 8px; text-align: center; }
-        .input-wrapper input { width: 100%; padding: 16px; border: 2.5px solid #ff6600; border-radius: 16px; font-size: 1.6rem; font-weight: 800; text-align: center; outline: none; background: #fff8f5; color: #222; }
-        .resultado-box { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; border-radius: 20px; padding: 22px; text-align: center; box-shadow: 0 8px 20px rgba(46, 125, 50, 0.25); margin-bottom: 20px; }
-        .resultado-box .monto-ves { font-size: 2.3rem; font-weight: 900; margin: 8px 0; }
-        .resultado-box .monto-bcv { font-size: 1.05rem; background: rgba(255, 255, 255, 0.2); padding: 6px 16px; border-radius: 30px; display: inline-block; font-weight: 700; }
-        .admin-panel { background: #f8f9fa; border-radius: 16px; padding: 15px; border: 1px dashed #cccccc; }
-        .admin-title { font-size: 0.85rem; font-weight: 700; color: #666; text-transform: uppercase; margin-bottom: 10px; text-align: center; }
+        body { background: #f4f6f9; color: #333; padding: 20px 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { max-width: 400px; width: 100%; background: #ffffff; border-radius: 28px; padding: 28px 24px; box-shadow: 0 12px 35px rgba(0,0,0,0.06); border: 1px solid #eaeaea; position: relative; }
+        
+        /* Encabezado elegante */
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { color: #ff6600; font-size: 1.75rem; font-weight: 800; tracking: -0.5px; }
+        .header p { color: #888; font-size: 0.88rem; margin-top: 3px; font-weight: 500; }
+        
+        /* Entrada de texto */
+        .input-group { margin-bottom: 22px; }
+        .input-group label { display: block; font-size: 0.9rem; font-weight: 700; color: #444; margin-bottom: 10px; text-align: center; }
+        .input-wrapper { position: relative; }
+        .input-wrapper input { width: 100%; padding: 16px; border: 2px solid #e2e8f0; border-radius: 18px; font-size: 1.8rem; font-weight: 800; text-align: center; outline: none; background: #fafafa; color: #1a202c; transition: all 0.2s; }
+        .input-wrapper input:focus { border-color: #ff6600; background: #fff; box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.1); }
+        
+        /* Caja de Resultado */
+        .resultado-box { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 22px; padding: 24px 15px; text-align: center; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.25); margin-bottom: 15px; }
+        .resultado-box .label-res { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; font-weight: 600; }
+        .resultado-box .monto-ves { font-size: 2.4rem; font-weight: 900; margin: 6px 0; letter-spacing: -0.5px; }
+        .resultado-box .monto-bcv { font-size: 0.95rem; background: rgba(255, 255, 255, 0.18); padding: 5px 14px; border-radius: 20px; display: inline-block; font-weight: 600; backdrop-filter: blur(4px); }
+        
+        /* Footer disimulado para admin */
+        .footer-admin { text-align: center; margin-top: 15px; }
+        .btn-admin-toggle { background: none; border: none; color: #cbd5e1; font-size: 0.75rem; cursor: pointer; text-decoration: none; padding: 5px 10px; transition: color 0.2s; }
+        .btn-admin-toggle:hover { color: #94a3b8; }
+        
+        /* Panel Admin Oculto */
+        .admin-panel { display: none; background: #f8fafc; border-radius: 18px; padding: 18px; border: 1px solid #e2e8f0; margin-top: 15px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .admin-title { font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 12px; text-align: center; display: flex; justify-content: space-between; align-items: center; }
         .tasas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .tasa-item label { display: block; font-size: 0.72rem; color: #555; font-weight: 600; margin-bottom: 4px; text-align: center; }
-        .tasa-item input { width: 100%; padding: 8px 4px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; font-weight: bold; text-align: center; background: white; outline: none; }
+        .tasa-item label { display: block; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 4px; text-align: center; }
+        .tasa-item input { width: 100%; padding: 8px 4px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; font-weight: 700; text-align: center; background: white; color: #334155; outline: none; }
+        .tasa-item input:focus { border-color: #ff6600; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <div class="header">
-        <h1>🛍️ TEMU EXPRESS</h1>
-        <p>Calculadora Directa de Precios</p>
+        <h1 id="logoApp" style="cursor: pointer;" title="Configuración de tasas">🛍️ TEMU EXPRESS</h1>
+        <p>Calculadora Oficial de Pedidos</p>
     </div>
 
     <div class="input-group">
-        <label for="precioCop">Monto en Pesos Colombianos ($):</label>
+        <label for="precioCop">Monto del producto (COP $):</label>
         <div class="input-wrapper">
-            <input type="number" id="precioCop" placeholder="Ej: 30000" oninput="calcular()" autofocus>
+            <input type="number" id="precioCop" placeholder="Ej: 35000" oninput="calcular()" autofocus>
         </div>
     </div>
 
     <div class="resultado-box">
-        <div style="font-size: 0.85rem; text-transform: uppercase; opacity: 0.9;">Precio Final a Pagar:</div>
+        <div class="label-res">Total a Pagar</div>
         <div class="monto-ves" id="resVes">0,00 Bs.</div>
         <div class="monto-bcv" id="resBcv">Equivalente a: $0.00 BCV</div>
     </div>
 
-    <div class="admin-panel">
-        <div class="admin-title">⚙️ Ajustar Tasas del Día</div>
+    <!-- Panel Admin Oculto -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-title">
+            <span>⚙️ Panel de Tasas</span>
+            <span style="font-size: 0.65rem; color: #10b981; font-weight: 600;">(Guardado Auto)</span>
+        </div>
         <div class="tasas-grid">
             <div class="tasa-item">
                 <label>Tasa COP</label>
-                <input type="number" id="tasaCop" value="3150" oninput="calcular()">
+                <input type="number" id="tasaCop" value="3150" oninput="guardarYCalcular()">
             </div>
             <div class="tasa-item">
-                <label>Tasa Binance</label>
-                <input type="number" id="tasaBinance" value="880" oninput="calcular()">
+                <label>Binance</label>
+                <input type="number" id="tasaBinance" value="880" oninput="guardarYCalcular()">
             </div>
             <div class="tasa-item">
-                <label>Tasa BCV</label>
-                <input type="number" id="tasaBcv" value="737" oninput="calcular()">
+                <label>BCV</label>
+                <input type="number" id="tasaBcv" value="737" oninput="guardarYCalcular()">
             </div>
         </div>
+    </div>
+
+    <div class="footer-admin">
+        <button class="btn-admin-toggle" onclick="solicitarAccesoAdmin()">⚙️ Ajustes de administrador</button>
     </div>
 </div>
 
 <script>
+    // Cargar tasas guardadas en el dispositivo o usar las por defecto
+    window.onload = function() {
+        if(localStorage.getItem('tasaCop')) document.getElementById('tasaCop').value = localStorage.getItem('tasaCop');
+        if(localStorage.getItem('tasaBinance')) document.getElementById('tasaBinance').value = localStorage.getItem('tasaBinance');
+        if(localStorage.getItem('tasaBcv')) document.getElementById('tasaBcv').value = localStorage.getItem('tasaBcv');
+        calcular();
+    };
+
+    function guardarYCalcular() {
+        localStorage.setItem('tasaCop', document.getElementById('tasaCop').value);
+        localStorage.setItem('tasaBinance', document.getElementById('tasaBinance').value);
+        localStorage.setItem('tasaBcv', document.getElementById('tasaBcv').value);
+        calcular();
+    }
+
     function calcular() {
         const precioCop = parseFloat(document.getElementById('precioCop').value) || 0;
         const tasaCop = parseFloat(document.getElementById('tasaCop').value) || 1;
@@ -79,7 +121,21 @@
         document.getElementById('resBcv').innerText = 'Equivalente a: $' + totalBcv.toFixed(2) + ' BCV';
     }
 
-    calcular();
+    // Seguridad simple para abrir el panel de tasas
+    function solicitarAccesoAdmin() {
+        const panel = document.getElementById('adminPanel');
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+        } else {
+            const clave = prompt("Ingresa la clave de administrador:");
+            // Clave predeterminada: 1234
+            if (clave === "1234") {
+                panel.style.display = 'block';
+            } else if (clave !== null) {
+                alert("Clave incorrecta");
+            }
+        }
+    }
 </script>
 
 </body>
