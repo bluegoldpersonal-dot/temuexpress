@@ -7,17 +7,21 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         body { background: #f4f6f9; color: #333; padding: 20px 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { max-width: 400px; width: 100%; background: #ffffff; border-radius: 28px; padding: 28px 24px; box-shadow: 0 12px 35px rgba(0,0,0,0.06); border: 1px solid #eaeaea; position: relative; }
+        .card { max-width: 420px; width: 100%; background: #ffffff; border-radius: 28px; padding: 28px 24px; box-shadow: 0 12px 35px rgba(0,0,0,0.06); border: 1px solid #eaeaea; position: relative; }
         
-        .header { text-align: center; margin-bottom: 25px; }
+        .header { text-align: center; margin-bottom: 20px; }
         .header h1 { color: #ff6600; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.5px; }
         .header p { color: #888; font-size: 0.88rem; margin-top: 3px; font-weight: 500; }
         
-        .input-group { margin-bottom: 22px; }
-        .input-group label { display: block; font-size: 0.9rem; font-weight: 700; color: #444; margin-bottom: 10px; text-align: center; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.9rem; font-weight: 700; color: #444; margin-bottom: 8px; text-align: center; }
         .input-wrapper input { width: 100%; padding: 16px; border: 2px solid #e2e8f0; border-radius: 18px; font-size: 1.8rem; font-weight: 800; text-align: center; outline: none; background: #fafafa; color: #1a202c; transition: all 0.2s; }
         .input-wrapper input:focus { border-color: #ff6600; background: #fff; box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.1); }
         
+        /* Aviso detallado y extenso */
+        .aviso-cambios { font-size: 0.73rem; color: #475569; text-align: left; margin-bottom: 18px; line-height: 1.4; background: #f8fafc; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; }
+        .aviso-cambios b { color: #334155; display: block; margin-bottom: 3px; text-align: center; font-size: 0.77rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
         .resultado-box { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 22px; padding: 24px 15px; text-align: center; box-shadow: 0 10px 25px rgba(5, 150, 105, 0.25); margin-bottom: 15px; }
         .resultado-box .label-res { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; font-weight: 600; }
         .resultado-box .monto-ves { font-size: 2.4rem; font-weight: 900; margin: 6px 0; letter-spacing: -0.5px; }
@@ -51,11 +55,16 @@
         </div>
     </div>
 
+    <!-- Aviso detallado -->
+    <div class="aviso-cambios">
+        <b>⚠️ Información Importante</b>
+        Los precios en la plataforma varían constantemente según las ofertas activas, el tipo de usuario o la ubicación. Además, el costo final puede ajustarse según el momento del envío y la cotización de las tasas al concretar tu pedido. Esta calculadora ofrece un estimado de referencia.
+    </div>
+
     <div class="resultado-box">
         <div class="label-res">Total a Pagar</div>
         <div class="monto-ves" id="resVes">0,00 Bs.</div>
         
-        <!-- Muestra USDT y BCV -->
         <div class="detalles-usd">
             <div class="badge-usd" id="resUsdt">$0.00 USDT</div>
             <div class="badge-usd" id="resBcv">$0.00 BCV</div>
